@@ -5,14 +5,14 @@ using System.Threading.Tasks;
 
 namespace GoCDSharp.Endpoints
 {
-    public interface IGoCDAgentsClient
+    public interface IGoCDAgentsEndpoint
     {
         Task<GoCDAgents> GetAllAsync();
     }
 
-    public class GoCDAgentsClient : GoCDEndpoint, IGoCDAgentsClient
+    public class GoCDAgentsEndpoint : GoCDEndpoint, IGoCDAgentsEndpoint
     {
-        public GoCDAgentsClient(Uri apiBaseUri) : base(apiBaseUri, "agents")
+        public GoCDAgentsEndpoint(Uri apiBaseUri) : base(apiBaseUri, "agents")
         {
         }
 
