@@ -1,8 +1,7 @@
 ﻿using Flurl.Http;
-using GoCDSharp.Dtos;
 using Newtonsoft.Json;
+using GoCDSharp.Dtos;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -14,7 +13,7 @@ namespace GoCDSharp.Endpoints
 
         Task DeleteAsync(string templateName);
 
-        Task<IEnumerable<GoCDTemplate>> GetAllAsync();
+        Task<GoCDTemplateConfig> GetAllAsync();
 
         Task<GoCDTemplate> GetAsync(string name);
 
@@ -32,7 +31,6 @@ namespace GoCDSharp.Endpoints
             return await this.Endpoint
                              .ToString()
                              .WithHeader("Accept", this.GetAcceptHeader(5))
-                             .AllowHttpStatus("422")
                              .PostJsonAsync(template)
                              .ReceiveJson<GoCDTemplate>()
                              .ConfigureAwait(false);
@@ -48,15 +46,13 @@ namespace GoCDSharp.Endpoints
                       .ConfigureAwait(false);
         }
 
-        public async Task<IEnumerable<GoCDTemplate>> GetAllAsync()
+        public async Task<GoCDTemplateConfig> GetAllAsync()
         {
-            var result = await this.Endpoint
-                                   .ToString()
-                                   .WithHeader("Accept", this.GetAcceptHeader(5))
-                                   .GetJsonAsync<TemplateConfig>()
-                                   .ConfigureAwait(false);
-
-            return result.Embedded.Templates;
+            return await this.Endpoint
+                             .ToString()
+                             .WithHeader("Accept", this.GetAcceptHeader(5))
+                             .GetJsonAsync<GoCDTemplateConfig>()
+                             .ConfigureAwait(false);
         }
 
         public async Task<GoCDTemplate> GetAsync(string name)

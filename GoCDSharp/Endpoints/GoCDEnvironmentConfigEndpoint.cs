@@ -1,8 +1,8 @@
 ﻿using Flurl.Http;
-using GoCDSharp.Dtos;
 using Newtonsoft.Json;
+using GoCDSharp.Dtos;
+using GoCDSharp.Requests;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -14,11 +14,13 @@ namespace GoCDSharp.Endpoints
 
         Task DeleteAsync(string name);
 
-        Task<IEnumerable<GoCDEnvironment>> GetAllAsync();
+        Task<GoCDEnvironmentConfig> GetAllAsync();
 
         Task<GoCDEnvironment> GetAsync(string name);
 
-        Task UpdateAsync(string environmentName, GoCDPatchEnvironment patch);
+        Task PatchAsync(string environmentName, GoCDPatchEnvironmentRequest patch);
+
+        Task UpdateAsync(string environmentName, string eTag, GoCDUpdateEnvironmentRequest updateRequest);
     }
 
     public class GoCDEnvironmentConfigEndpoint : GoCDEndpoint, IGoCDEnvironmentConfigEndpoint
@@ -47,7 +49,7 @@ namespace GoCDSharp.Endpoints
                       .ConfigureAwait(false);
         }
 
-        public async Task<IEnumerable<GoCDEnvironment>> GetAllAsync()
+        public async Task<GoCDEnvironmentConfig> GetAllAsync()
         {
             var request = this.Endpoint
                               .ToString()
@@ -59,12 +61,13 @@ namespace GoCDSharp.Endpoints
                 var rawContent = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
                 var content = JsonConvert.DeserializeObject<GoCDEnvironmentConfig>(rawContent);
 
+                content.ETag = eTag;
                 foreach (var envrionment in content.Embedded.Environments)
                 {
                     envrionment.ETag = eTag;
                 }
 
-                return content.Embedded.Environments;
+                return content;
             }
         }
 
@@ -86,13 +89,24 @@ namespace GoCDSharp.Endpoints
             }
         }
 
-        public async Task UpdateAsync(string name, GoCDPatchEnvironment patchDto)
+        public async Task PatchAsync(string name, GoCDPatchEnvironmentRequest patchDto)
         {
             await this.Endpoint
                       .ToString()
-                      .WithHeader("Accept", this.GetAcceptHeader(2))
+                      .WithHeader("Accept", this.GetAcceptHeader(3))
                       .AppendPathSegment(name)
                       .PatchJsonAsync(patchDto)
+                      .ConfigureAwait(false);
+        }
+
+        public async Task UpdateAsync(string name, string eTag, GoCDUpdateEnvironmentRequest updateRequest)
+        {
+            await this.Endpoint
+                      .ToString()
+                      .WithHeader("Accept", this.GetAcceptHeader(3))
+                      .WithHeader("If-Match", eTag)
+                      .AppendPathSegment(name)
+                      .PutJsonAsync(updateRequest)
                       .ConfigureAwait(false);
         }
     }

@@ -8,7 +8,7 @@ namespace GoCDSharp.Endpoints
 {
     public interface IGoCDPipelineGroupsEndpoint
     {
-        Task<IEnumerable<GoCDPipelineGroups>> GetAllAsync();
+        Task<IEnumerable<GoCDPipelineGroup>> GetAllAsync();
     }
 
     public class GoCDPipelineGroupsEndpoint : GoCDEndpoint, IGoCDPipelineGroupsEndpoint
@@ -17,11 +17,11 @@ namespace GoCDSharp.Endpoints
         {
         }
 
-        public async Task<IEnumerable<GoCDPipelineGroups>> GetAllAsync()
+        public async Task<IEnumerable<GoCDPipelineGroup>> GetAllAsync()
         {
             return await this.Endpoint
                              .ToString()
-                             .GetJsonAsync<List<GoCDPipelineGroups>>()
+                             .GetJsonAsync<List<GoCDPipelineGroup>>()
                              .ConfigureAwait(false);
         }
     }

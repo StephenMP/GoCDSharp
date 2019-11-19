@@ -17,14 +17,37 @@ namespace GoCDSharp.Dtos
         public List<GoCDStage> Stages { get; set; }
     }
 
-    public class TemplateConfig
+    public class GoCDTemplateConfigTemplate : GoCDEntity
     {
-        public TemplateConfig()
+        public GoCDTemplateConfigTemplate()
         {
-            this.Embedded = new Embedded();
+            this.Embedded = new GoCDEmbedded();
+        }
+
+        [JsonProperty("name")]
+        public string Name { get; set; }
+
+        [JsonProperty("_embedded")]
+        public GoCDEmbedded Embedded { get; set; }
+    }
+
+    public class GoCDTemplateConfig : GoCDEntity
+    {
+        public GoCDTemplateConfig()
+        {
+            this.Embedded = new GoCDEmbedded();
         }
 
         [JsonProperty("_embedded")]
-        public Embedded Embedded { get; set; }
+        public GoCDEmbedded Embedded { get; set; }
+    }
+
+    public partial class GoCDEmbedded
+    {
+        [JsonProperty("templates")]
+        public List<GoCDTemplateConfigTemplate> Templates { get; set; }
+
+        [JsonProperty("pipelines")]
+        public List<GoCDPipeline> Pipelines { get; set; }
     }
 }

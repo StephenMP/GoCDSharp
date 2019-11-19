@@ -3,18 +3,18 @@ using System.Collections.Generic;
 
 namespace GoCDSharp.Dtos
 {
-    public class GoCDPipeline : GoCDEntity
+    public partial class GoCDPipeline : GoCDEntity
     {
         public GoCDPipeline()
         {
             this.Parameters = new List<GoCDParameter>();
-            this.EnvironmentVariables = new List<EnvironmentVariable>();
+            this.EnvironmentVariables = new List<GoCDEnvironmentVariable>();
             this.Materials = new List<GoCDMaterial>();
             this.Stages = new List<GoCDStage>();
         }
 
         [JsonProperty("environment_variables")]
-        public List<EnvironmentVariable> EnvironmentVariables { get; set; }
+        public List<GoCDEnvironmentVariable> EnvironmentVariables { get; set; }
 
         [JsonProperty("label_template")]
         public string LabelTemplate { get; set; }
@@ -27,9 +27,6 @@ namespace GoCDSharp.Dtos
 
         [JsonProperty("name")]
         public string Name { get; set; }
-
-        [JsonProperty("origin")]
-        public GoCDOrigin Origin { get; set; }
 
         [JsonProperty("parameters")]
         public List<GoCDParameter> Parameters { get; set; }

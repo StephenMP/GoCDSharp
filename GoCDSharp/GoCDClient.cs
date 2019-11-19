@@ -17,6 +17,12 @@ namespace GoCDSharp
     {
         public GoCDClient(Uri apiBaseUri)
         {
+            var apiBaseUriString = apiBaseUri.ToString();
+            if (apiBaseUriString.ToLowerInvariant().Contains("/go/api"))
+            {
+                apiBaseUri = new Uri(apiBaseUriString.TrimEnd('/').Replace("/go/api", ""));
+            }
+
             this.Agents = new GoCDAgentsEndpoint(apiBaseUri);
             this.EnvironmentConfig = new GoCDEnvironmentConfigEndpoint(apiBaseUri);
             this.PipelineConfig = new GoCDPipelineConfigEndpoint(apiBaseUri);

@@ -7,7 +7,7 @@ namespace GoCDSharp.Endpoints
 {
     public interface IGoCDAgentsEndpoint
     {
-        Task<GoCDAgents> GetAllAsync();
+        Task<GoCdAgents> GetAllAsync();
     }
 
     public class GoCDAgentsEndpoint : GoCDEndpoint, IGoCDAgentsEndpoint
@@ -16,12 +16,12 @@ namespace GoCDSharp.Endpoints
         {
         }
 
-        public async Task<GoCDAgents> GetAllAsync()
+        public async Task<GoCdAgents> GetAllAsync()
         {
             return await this.Endpoint
                              .ToString()
                              .WithHeader("Accept", this.GetAcceptHeader(6))
-                             .GetJsonAsync<GoCDAgents>()
+                             .GetJsonAsync<GoCdAgents>()
                              .ConfigureAwait(false);
         }
     }

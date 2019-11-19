@@ -6,7 +6,7 @@ namespace GoCDSharp.Endpoints
     {
         public GoCDEndpoint(Uri apiBaseUri, string endpoint)
         {
-            this.Endpoint = new Uri(apiBaseUri, endpoint);
+            this.Endpoint = new Uri(apiBaseUri, $"/go/api/{endpoint}");
         }
 
         public Uri Endpoint { get; }

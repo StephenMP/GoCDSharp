@@ -7,7 +7,7 @@ namespace GoCDSharp.Dtos
     {
         public GoCDStage()
         {
-            this.EnvironmentVariables = new List<EnvironmentVariable>();
+            this.EnvironmentVariables = new List<GoCDEnvironmentVariable>();
             this.Jobs = new List<GoCDJob>();
         }
 
@@ -18,7 +18,7 @@ namespace GoCDSharp.Dtos
         public bool CleanWorkingDirectory { get; set; }
 
         [JsonProperty("environment_variables")]
-        public List<EnvironmentVariable> EnvironmentVariables { get; set; }
+        public List<GoCDEnvironmentVariable> EnvironmentVariables { get; set; }
 
         [JsonProperty("fetch_materials")]
         public bool FetchMaterials { get; set; }

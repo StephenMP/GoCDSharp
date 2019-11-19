@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace GoCDSharp.Dtos
 {
-    public class GoCDPipelineGroups
+    public class GoCDPipelineGroup
     {
         [JsonProperty("name")]
         public string Name { get; set; }
