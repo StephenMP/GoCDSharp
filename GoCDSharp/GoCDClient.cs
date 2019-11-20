@@ -1,4 +1,5 @@
-﻿using GoCDSharp.Endpoints;
+﻿using Flurl.Http;
+using GoCDSharp.Endpoints;
 using System;
 
 namespace GoCDSharp
@@ -33,6 +34,32 @@ namespace GoCDSharp
 
         public GoCDClient(string apiBaseUri) : this(new Uri(apiBaseUri))
         {
+        }
+
+        public GoCDClient WithBearerToken(string token)
+        {
+            FlurlHttp.Configure(settings =>
+            {
+                settings.BeforeCall = httpCall =>
+                {
+                    httpCall.FlurlRequest.WithHeader("Authorization", $"bearer {token}");
+                };
+            });
+
+            return this;
+        }
+
+        public GoCDClient WithBasicAuthentication(string username, string password)
+        {
+            FlurlHttp.Configure(settings =>
+            {
+                settings.BeforeCall = httpCall =>
+                {
+                    httpCall.FlurlRequest.WithBasicAuth(username, password);
+                };
+            });
+
+            return this;
         }
 
         public IGoCDAgentsEndpoint Agents { get; set; }
