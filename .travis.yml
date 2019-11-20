@@ -1,20 +1,20 @@
 language: csharp
-solution: RestWell.sln
+solution: GoCDSharp.sln
 dist: xenial
 mono: none
-dotnet: 2.1.300
+dotnet: 3.0
 install:
   - dotnet restore
 script:
   - dotnet build -c Release
-  - dotnet test -c Release --no-build RestWell.Test/RestWell.Test.csproj -p:CollectCoverage=true -p:CoverletOutputFormat=opencover -p:Exclude="[RestWell.Tests*]*"
+  - dotnet test -c Release --no-build GoCDSharp.Test/GoCDSharp.Test.csproj -p:CollectCoverage=true -p:CoverletOutputFormat=opencover -p:Exclude="[GoCDSharp.Tests*]*"
   - curl -s https://codecov.io/bash > codecov
   - chmod +x codecov
-  - ./codecov -f ./RestWell.Tests/coverage.opencover.xml
+  - ./codecov -f ./GoCDSharp.Tests/coverage.opencover.xml
 deploy:
   skip_cleanup: true
   provider: script
-  script: dotnet nuget push ./RestWell/bin/Release/*.nupkg -k $NUGET_API_KEY -s https://api.nuget.org/v3/index.json
+  script: dotnet nuget push ./GoCDSharp/bin/Release/*.nupkg -k $NUGET_API_KEY -s https://api.nuget.org/v3/index.json
   on:
     branch: release
 notifications:
