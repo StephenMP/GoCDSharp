@@ -13,7 +13,7 @@ namespace GoCDSharp.Endpoints
 
     public class GoCDPipelineGroupsEndpoint : GoCDEndpoint, IGoCDPipelineGroupsEndpoint
     {
-        public GoCDPipelineGroupsEndpoint(Uri apiBaseUri) : base(apiBaseUri, "config/pipeline_groups")
+        public GoCDPipelineGroupsEndpoint(Uri apiBaseUri) : base(apiBaseUri, "config/pipeline_groups", 0)
         {
         }
 

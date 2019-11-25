@@ -1,7 +1,7 @@
 ﻿using Flurl.Http;
-using Newtonsoft.Json;
 using GoCDSharp.Dtos;
 using GoCDSharp.Requests;
+using Newtonsoft.Json;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -23,15 +23,13 @@ namespace GoCDSharp.Endpoints
 
     public class GoCDPipelineConfigEndpoint : GoCDEndpoint, IGoCDPipelineConfigEndpoint
     {
-        public GoCDPipelineConfigEndpoint(Uri apiBaseUri) : base(apiBaseUri, "admin/pipelines")
+        public GoCDPipelineConfigEndpoint(Uri apiBaseUri) : base(apiBaseUri, "admin/pipelines", 10)
         {
         }
 
         public async Task<GoCDPipelineConfig> CreateAsync(GoCDCreatePipelineConfigRequest createPipelineConfigRequest)
         {
-            return await this.Endpoint
-                             .ToString()
-                             .WithHeader("Accept", this.GetAcceptHeader(10))
+            return await this.BeginRequest()
                              .PostJsonAsync(createPipelineConfigRequest)
                              .ReceiveJson<GoCDPipelineConfig>()
                              .ConfigureAwait(false);
@@ -49,9 +47,7 @@ namespace GoCDSharp.Endpoints
 
         public async Task DeleteAsync(string pipelineName)
         {
-            await this.Endpoint
-                      .ToString()
-                      .WithHeader("Accept", this.GetAcceptHeader(10))
+            await this.BeginRequest()
                       .AppendPathSegment(pipelineName)
                       .DeleteAsync()
                       .ConfigureAwait(false);
@@ -59,9 +55,7 @@ namespace GoCDSharp.Endpoints
 
         public async Task<GoCDPipelineConfig> EditAsync(GoCDPipelineConfig pipelineConfig)
         {
-            return await this.Endpoint
-                             .ToString()
-                             .WithHeader("Accept", this.GetAcceptHeader(10))
+            return await this.BeginRequest()
                              .WithHeader("If-Match", pipelineConfig.ETag)
                              .AppendPathSegment(pipelineConfig.Name)
                              .PutJsonAsync(pipelineConfig)
@@ -71,9 +65,7 @@ namespace GoCDSharp.Endpoints
 
         public async Task<GoCDPipelineConfig> GetAsync(string name)
         {
-            var request = this.Endpoint
-                              .ToString()
-                              .WithHeader("Accept", GetAcceptHeader(10))
+            var request = this.BeginRequest()
                               .AppendPathSegment(name);
 
             using (var response = await request.GetAsync().ConfigureAwait(false))

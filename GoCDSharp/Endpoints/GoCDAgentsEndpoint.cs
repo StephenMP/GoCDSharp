@@ -12,15 +12,13 @@ namespace GoCDSharp.Endpoints
 
     public class GoCDAgentsEndpoint : GoCDEndpoint, IGoCDAgentsEndpoint
     {
-        public GoCDAgentsEndpoint(Uri apiBaseUri) : base(apiBaseUri, "agents")
+        public GoCDAgentsEndpoint(Uri apiBaseUri) : base(apiBaseUri, "agents", 6)
         {
         }
 
         public async Task<GoCdAgents> GetAllAsync()
         {
-            return await this.Endpoint
-                             .ToString()
-                             .WithHeader("Accept", this.GetAcceptHeader(6))
+            return await this.BeginRequest()
                              .GetJsonAsync<GoCdAgents>()
                              .ConfigureAwait(false);
         }

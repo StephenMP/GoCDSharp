@@ -13,16 +13,14 @@ namespace GoCDSharp.Endpoints
 
     public class GoCDPipelinesEndpoint : GoCDEndpoint, IGoCDPipelinesEndpoint
     {
-        public GoCDPipelinesEndpoint(Uri apiBaseUri) : base(apiBaseUri, "pipelines")
+        public GoCDPipelinesEndpoint(Uri apiBaseUri) : base(apiBaseUri, "pipelines", 1)
         {
         }
 
         public async Task PauseAsync(string name, string reason)
         {
             var pauseCause = new { pause_cause = reason };
-            await this.Endpoint
-                      .ToString()
-                      .WithHeader("Accept", this.GetAcceptHeader(1))
+            await this.BeginRequest()
                       .AppendPathSegments(name, "pause")
                       .PostJsonAsync(pauseCause)
                       .ConfigureAwait(false);
@@ -30,9 +28,7 @@ namespace GoCDSharp.Endpoints
 
         public async Task UnpauseAsync(string name)
         {
-            await this.Endpoint
-                      .ToString()
-                      .WithHeader("Accept", this.GetAcceptHeader(1))
+            await this.BeginRequest()
                       .WithHeader("X-GoCD-Confirm", "true")
                       .AppendPathSegments(name, "unpause")
                       .PostStringAsync(string.Empty)
